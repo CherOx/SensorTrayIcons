@@ -3,6 +3,7 @@
 #include "ui_SensorTrayIcons.h"
 #include <QTimer>
 #include <QSystemTrayIcon>
+#include <QPainter>
 #include "SystemInfo.h"
 
 class CSensorTrayIcons : public QMainWindow

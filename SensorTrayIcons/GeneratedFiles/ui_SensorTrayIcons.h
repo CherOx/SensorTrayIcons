@@ -29,6 +29,9 @@ public:
     QWidget *centralWidget;
     QLabel *label;
     QLabel *label_2;
+    QLabel *label_3;
+    QLabel *label_4;
+    QLabel *label_5;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -46,6 +49,15 @@ public:
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(70, 80, 47, 13));
+        label_3 = new QLabel(centralWidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(70, 120, 47, 13));
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setGeometry(QRect(60, 160, 47, 13));
+        label_5 = new QLabel(centralWidget);
+        label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setGeometry(QRect(60, 200, 47, 13));
         CSensorTrayIconsClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(CSensorTrayIconsClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -68,6 +80,9 @@ public:
         CSensorTrayIconsClass->setWindowTitle(QApplication::translate("CSensorTrayIconsClass", "CSensorTrayIcons", Q_NULLPTR));
         label->setText(QApplication::translate("CSensorTrayIconsClass", "TextLabel", Q_NULLPTR));
         label_2->setText(QApplication::translate("CSensorTrayIconsClass", "TextLabel", Q_NULLPTR));
+        label_3->setText(QApplication::translate("CSensorTrayIconsClass", "TextLabel", Q_NULLPTR));
+        label_4->setText(QApplication::translate("CSensorTrayIconsClass", "TextLabel", Q_NULLPTR));
+        label_5->setText(QApplication::translate("CSensorTrayIconsClass", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };
