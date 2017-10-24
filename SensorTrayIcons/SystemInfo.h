@@ -21,7 +21,6 @@ public:
 	~CSystemInfo();
 
 	int8_t GetCPULoad() const;
-	int8_t GetCPULoad2();
 
 	int8_t GetRAMLoad() const;
 
@@ -30,6 +29,5 @@ public:
 private:
 	void InitCPU();
 	void InitHDD();
-	uint64_t Filetime2UInt64(const FILETIME& _val) const;
 };
 

@@ -9,23 +9,36 @@ CSensorTrayIcons::CSensorTrayIcons(QWidget *parent)
 
 	m_updateTimer.start(1000);
 
+	m_pvIcons.push_back(new CTrayIcon(this));
+	m_pvIcons.push_back(new CTrayIcon(this));
+	m_pvIcons.push_back(new CTrayIcon(this));
 
-	QPixmap pixmap(QSize(24, 24));
-	pixmap.fill(Qt::white);
+	m_pvIcons[0]->setToolTip("CPU");
 
-	QFont font;
-	font.setPixelSize(20);
+	QTime dieTime = QTime::currentTime().addMSecs(100);
 
-	QPainter painter(&pixmap);
-	painter.setFont(font);
-	painter.drawText(pixmap.rect(), Qt::AlignCenter, "00");
+	while (QTime::currentTime() < dieTime)
+		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 
-	QIcon icon(pixmap);
+	m_pvIcons[1]->setToolTip("RAM");
 
-	QSystemTrayIcon* trayIcon = new QSystemTrayIcon(this);
-	trayIcon->setIcon(icon);
-	trayIcon->setToolTip("Icon");
-	trayIcon->show();
+	while (QTime::currentTime() < dieTime)
+		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
+	m_pvIcons[2]->setToolTip("HDD");
+
+	m_pvIcons[0]->SetBackgroundColor(Qt::red);
+	m_pvIcons[1]->SetBackgroundColor(Qt::green);
+	m_pvIcons[2]->SetBackgroundColor(Qt::blue);
+
+	QMenu* pMenu = CreateMenu();
+	for (auto& i : m_pvIcons)
+	{
+		i->setContextMenu(pMenu);
+		i->show();
+	}
+
+	QTimer::singleShot(250, this, SLOT(hide()));
 }
 
 CSensorTrayIcons::~CSensorTrayIcons()
@@ -33,10 +46,36 @@ CSensorTrayIcons::~CSensorTrayIcons()
 
 }
 
+QMenu* CSensorTrayIcons::CreateMenu()
+{
+	QMenu* pMenu = new QMenu(this);
+	QAction* pActionSettings = new QAction("Settings", pMenu);
+	QAction* pActionAbout = new QAction("About", pMenu);
+	QAction* pActionExit = new QAction("Exit", pMenu);
+	connect(pActionSettings,	&QAction::triggered, this, &CSensorTrayIcons::OpenSettings);
+	connect(pActionAbout,		&QAction::triggered, this, &CSensorTrayIcons::OpenAbout);
+	connect(pActionExit,		&QAction::triggered, this, &CSensorTrayIcons::close);
+	pMenu->addAction(pActionSettings);
+	pMenu->addSeparator();
+	pMenu->addAction(pActionAbout);
+	pMenu->addSeparator();
+	pMenu->addAction(pActionExit);
+	return pMenu;
+}
+
+void CSensorTrayIcons::OpenSettings()
+{
+
+}
+
+void CSensorTrayIcons::OpenAbout()
+{
+
+}
+
 void CSensorTrayIcons::UpdateIcons()
 {
-	ui.label->setText(QString::number(m_system.GetCPULoad()));
-	ui.label_2->setText(QString::number(m_system.GetCPULoad2()));
-	ui.label_3->setText(QString::number(m_system.GetRAMLoad()));
-	ui.label_4->setText(QString::number(m_system.GetHDDLoad()));
+	m_pvIcons[0]->SetText(m_system.GetCPULoad());
+	m_pvIcons[1]->SetText(m_system.GetRAMLoad());
+	m_pvIcons[2]->SetText(m_system.GetHDDLoad());
 }
