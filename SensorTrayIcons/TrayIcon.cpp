@@ -1,27 +1,23 @@
 #include "TrayIcon.h"
 
-const QSize CTrayIcon::m_cDefaultIconSize = QSize(24, 24);
-const int CTrayIcon::m_cDefaultFontSize = 18;
-const QColor CTrayIcon::m_cDefaultBackgroundColor = QColor(Qt::yellow);
-const QString CTrayIcon::m_cDefaultText = "00";
-const QString CTrayIcon::m_cDefaultToolTip = "";
-
 CTrayIcon::CTrayIcon(QObject *parent) : QSystemTrayIcon(parent)
 {
-	m_BackgroundColor = m_cDefaultBackgroundColor;
-	m_Text = m_cDefaultText;
+	m_BackgroundColor = Constants::defaultBackgroundColor;
+	m_FontColor = Constants::defaultFontColor;
+	m_Text = Constants::defaultText;
 
-	m_pPixmap = new QPixmap(m_cDefaultIconSize);
+	m_pPixmap = new QPixmap(Constants::defaultIconSize, Constants::defaultIconSize);
 	m_pPixmap->fill(m_BackgroundColor);
 
-	m_Font.setPixelSize(m_cDefaultFontSize);
+	m_Font.setPixelSize(Constants::defaultFontSize);
 
 	m_pPainter = new QPainter(m_pPixmap);
 	m_pPainter->setFont(m_Font);
+	m_pPainter->setPen(m_FontColor);
 	m_pPainter->drawText(m_pPixmap->rect(), Qt::AlignCenter, m_Text);
 
 	setIcon(*m_pPixmap);
-	setToolTip(m_cDefaultToolTip);
+	setToolTip(Constants::defaultToolTip);
 }
 
 CTrayIcon::~CTrayIcon()
@@ -33,7 +29,7 @@ CTrayIcon::~CTrayIcon()
 void CTrayIcon::SetBackgroundColor(const QColor& _color)
 {
 	m_BackgroundColor = _color;
-	m_pPixmap->fill(m_BackgroundColor);
+	Update();
 }
 
 QColor CTrayIcon::GetBackgroundColor() const
@@ -41,10 +37,23 @@ QColor CTrayIcon::GetBackgroundColor() const
 	return m_BackgroundColor;
 }
 
+void CTrayIcon::SetFontColor(const QColor& _color)
+{
+	m_FontColor = _color;
+	m_pPainter->setPen(m_FontColor);
+	Update();
+}
+
+QColor CTrayIcon::GetFontColor() const
+{
+	return m_FontColor;
+}
+
 void CTrayIcon::SetFont(const QFont& _font)
 {
 	m_Font = _font;
 	m_pPainter->setFont(m_Font);
+	Update();
 }
 
 QFont CTrayIcon::GetFont() const
@@ -56,8 +65,7 @@ void CTrayIcon::SetIconSize(const QSize& _size)
 {
 	delete m_pPixmap;
 	m_pPixmap = new QPixmap(_size);
-	SetBackgroundColor(m_BackgroundColor);
-	SetText(m_Text);
+	Update();
 }
 
 QSize CTrayIcon::GetIconSize() const
@@ -68,9 +76,7 @@ QSize CTrayIcon::GetIconSize() const
 void CTrayIcon::SetText(const QString& _text)
 {
 	m_Text = _text;
-	m_pPixmap->fill(m_BackgroundColor);
-	m_pPainter->drawText(m_pPixmap->rect(), Qt::AlignCenter, m_Text);
-	setIcon(*m_pPixmap);
+	Update();
 }
 
 void CTrayIcon::SetText(const int8_t _val)
@@ -81,4 +87,11 @@ void CTrayIcon::SetText(const int8_t _val)
 QString CTrayIcon::GetText() const
 {
 	return m_Text;
+}
+
+void CTrayIcon::Update()
+{
+	m_pPixmap->fill(m_BackgroundColor);
+	m_pPainter->drawText(m_pPixmap->rect(), Qt::AlignCenter, m_Text);
+	setIcon(*m_pPixmap);
 }

@@ -62,11 +62,14 @@
     <ClCompile Include="TrayIcon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_Settings.cpp">
+    <ClCompile Include="GeneratedFiles\Debug\moc_SettingsTab.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_Settings.cpp">
+    <ClCompile Include="GeneratedFiles\Release\moc_SettingsTab.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsTab.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
@@ -85,11 +88,11 @@
     <CustomBuild Include="TrayIcon.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="Settings.ui">
+    <CustomBuild Include="SettingsTab.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SettingsTab.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -99,8 +102,14 @@
     <ClInclude Include="GeneratedFiles\ui_SensorTrayIcons.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_Settings.h">
+    <ClInclude Include="GeneratedFiles\ui_SettingsTab.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,16 +1,27 @@
 #pragma once
 
-#include <QDialog>
-#include "ui_Settings.h"
+#include <QFont>
+#include "Defines.h"
 
-class CSettings : public QDialog
+class CSettings
 {
-	Q_OBJECT
+private:
+	struct SIconDescriptor
+	{
+		bool active;
+		ESensorType sensor;
+		QString name;
+		QColor backgroundColor;
+		QColor fontColor;
+		QFont font;
+		QString toolTip;
+	};
+
+	unsigned m_nUpdateTime;
+	unsigned m_nIconSize;
 
 public:
-	CSettings(QWidget *parent = Q_NULLPTR);
+	CSettings();
 	~CSettings();
-
-private:
-	Ui::CSettings ui;
 };
+

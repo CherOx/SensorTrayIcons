@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CSettings</class>
- <widget class="QDialog" name="CSettings">
+ <class>CSettingsTab</class>
+ <widget class="QDialog" name="CSettingsTab">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>187</width>
-    <height>128</height>
+    <width>255</width>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -76,6 +76,16 @@
        </widget>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
   </layout>

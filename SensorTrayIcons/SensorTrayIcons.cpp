@@ -1,13 +1,16 @@
 #include "SensorTrayIcons.h"
 
-CSensorTrayIcons::CSensorTrayIcons(QWidget *parent)
-	: QMainWindow(parent)
+CSensorTrayIcons::CSensorTrayIcons(QWidget *parent /*= nullptr*/) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 
+	m_pSettingsTab = new CSettingsTab(this);
+
+	connect(m_pSettingsTab, &CSettingsTab::accepted, this, &CSensorTrayIcons::ApplySettings);
 	connect(&m_updateTimer, &QTimer::timeout, this, &CSensorTrayIcons::UpdateIcons);
 
-	m_updateTimer.start(1000);
+	m_nUpdateInterval = 1000;
+	m_updateTimer.start(m_nUpdateInterval);
 
 	m_pvIcons.push_back(new CTrayIcon(this));
 	m_pvIcons.push_back(new CTrayIcon(this));
@@ -65,7 +68,16 @@ QMenu* CSensorTrayIcons::CreateMenu()
 
 void CSensorTrayIcons::OpenSettings()
 {
+	m_pSettingsTab->show();
+}
 
+void CSensorTrayIcons::ApplySettings()
+{
+	//if (m_pSettingsTab->GetUpdateInterval() != m_nUpdateInterval)
+	//{
+	//	m_nUpdateInterval = m_pSettingsTab->GetUpdateInterval();
+	//	m_updateTimer.setInterval(m_nUpdateInterval);
+	//}
 }
 
 void CSensorTrayIcons::OpenAbout()

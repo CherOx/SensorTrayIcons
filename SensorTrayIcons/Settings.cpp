@@ -1,9 +1,9 @@
 #include "Settings.h"
 
-CSettings::CSettings(QWidget *parent)
-	: QDialog(parent)
+CSettings::CSettings()
 {
-	ui.setupUi(this);
+	m_nUpdateTime = Constants::defaultUpdateTime;
+	m_nIconSize = Constants::defaultIconSize;
 }
 
 CSettings::~CSettings()
