@@ -2,25 +2,31 @@
 
 #include <QColor>
 
-enum class ESensorType : unsigned
+namespace Sensors
 {
-	CPU_TOTAL_UTILIZATION,
-	RAM_UTILIZATION,
-	HDD_C_UTILIZATION
-};
+	enum class ESensorType : unsigned
+	{
+		CPU_TOTAL_UTILIZATION = 0,
+		RAM_UTILIZATION = 1,
+		HDD_C_UTILIZATION = 2
+	};
 
-const char* const SensorNames[3] =
-{
-	"CPU Utilization",
-	"RAM Utilization",
-	"Drive C: Utilization"
-};
-const char* const SensorToolTips[3] =
-{
-	"CPU Utilization",
-	"RAM Utilization",
-	"Drive C: Utilization"
-};
+	const unsigned sensorNumber = 3;
+
+	const char* const sensorNames[sensorNumber] =
+	{
+		"CPU Utilization",
+		"RAM Utilization",
+		"Drive C: Utilization"
+	};
+	const char* const sensorToolTips[sensorNumber] =
+	{
+		"CPU Utilization",
+		"RAM Utilization",
+		"Drive C: Utilization"
+	};
+}
+
 
 namespace Constants
 {

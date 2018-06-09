@@ -9,7 +9,7 @@ private:
 	struct SIconDescriptor
 	{
 		bool active;
-		ESensorType sensor;
+		Sensors::ESensorType sensor;
 		QString name;
 		QColor backgroundColor;
 		QColor fontColor;
@@ -19,6 +19,7 @@ private:
 
 	unsigned m_nUpdateTime;
 	unsigned m_nIconSize;
+	std::vector<SIconDescriptor> m_vIcons;
 
 public:
 	CSettings();
