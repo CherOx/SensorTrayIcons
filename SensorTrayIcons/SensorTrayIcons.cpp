@@ -1,38 +1,27 @@
 #include "SensorTrayIcons.h"
+#include <QTime>
 
 CSensorTrayIcons::CSensorTrayIcons(QWidget *parent /*= nullptr*/) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 
+	m_pSettings = new CSettings(&m_system);
 	m_pSettingsTab = new CSettingsTab(this);
 
-	connect(m_pSettingsTab, &CSettingsTab::accepted, this, &CSensorTrayIcons::ApplySettings);
-	connect(&m_updateTimer, &QTimer::timeout, this, &CSensorTrayIcons::UpdateIcons);
-
-	m_nUpdateInterval = 1000;
-	m_updateTimer.start(m_nUpdateInterval);
-
-	m_pvIcons.push_back(new CTrayIcon(this));
-	m_pvIcons.push_back(new CTrayIcon(this));
-	m_pvIcons.push_back(new CTrayIcon(this));
-
-	m_pvIcons[0]->setToolTip("CPU");
-
-	QTime dieTime = QTime::currentTime().addMSecs(100);
-
-	while (QTime::currentTime() < dieTime)
-		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-	m_pvIcons[1]->setToolTip("RAM");
-
-	while (QTime::currentTime() < dieTime)
-		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-	m_pvIcons[2]->setToolTip("HDD");
-
-	m_pvIcons[0]->SetBackgroundColor(Qt::red);
-	m_pvIcons[1]->SetBackgroundColor(Qt::green);
-	m_pvIcons[2]->SetBackgroundColor(Qt::blue);
+	for (size_t i = 0; i < m_pSettings->IconsCount(); ++i)
+	{
+		const SIconDescriptor icon = m_pSettings->GetIcon(i);
+		if(icon.active)
+		{
+			m_pvIcons.push_back(new CTrayIcon(this));
+			m_pvIcons.back()->SetType(icon.sensor);
+			m_pvIcons.back()->SetBackgroundColor(icon.backgroundColor);
+			m_pvIcons.back()->SetFont(icon.font);
+			m_pvIcons.back()->SetFontColor(icon.fontColor);
+			m_pvIcons.back()->setToolTip(icon.toolTip);
+			m_pvIcons.back()->SetIconSize(m_pSettings->GetIconSize());
+		}
+	}
 
 	QMenu* pMenu = CreateMenu();
 	for (auto& i : m_pvIcons)
@@ -41,17 +30,16 @@ CSensorTrayIcons::CSensorTrayIcons(QWidget *parent /*= nullptr*/) : QMainWindow(
 		i->show();
 	}
 
-	QTimer::singleShot(250, this, SLOT(hide()));
-}
+	connect(m_pSettingsTab, &CSettingsTab::accepted,	this, &CSensorTrayIcons::ApplySettings);
+	connect(&m_updateTimer, &QTimer::timeout,			this, &CSensorTrayIcons::UpdateIcons);
 
-CSensorTrayIcons::~CSensorTrayIcons()
-{
-
+	m_nUpdateInterval = m_pSettings->GetUpdateTime();
+	m_updateTimer.start(m_nUpdateInterval);
 }
 
 QMenu* CSensorTrayIcons::CreateMenu()
 {
-	QMenu* pMenu = new QMenu(this);
+	auto* pMenu = new QMenu(this);
 	QAction* pActionSettings = new QAction("Settings", pMenu);
 	QAction* pActionAbout = new QAction("About", pMenu);
 	QAction* pActionExit = new QAction("Exit", pMenu);
@@ -66,7 +54,7 @@ QMenu* CSensorTrayIcons::CreateMenu()
 	return pMenu;
 }
 
-void CSensorTrayIcons::OpenSettings()
+void CSensorTrayIcons::OpenSettings() const
 {
 	m_pSettingsTab->show();
 }
@@ -87,7 +75,6 @@ void CSensorTrayIcons::OpenAbout()
 
 void CSensorTrayIcons::UpdateIcons()
 {
-	m_pvIcons[0]->SetText(m_system.GetCPULoad());
-	m_pvIcons[1]->SetText(m_system.GetRAMLoad());
-	m_pvIcons[2]->SetText(m_system.GetHDDLoad());
+	for(auto& icon : m_pvIcons)
+		icon->SetValue(m_system.GetValue(icon->GetType()));
 }

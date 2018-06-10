@@ -1,13 +1,11 @@
 #pragma once
 
 #include "ui_SensorTrayIcons.h"
-#include <QTimer>
-#include <QTime>
-#include <QSystemTrayIcon>
 #include "SystemInfo.h"
 #include "TrayIcon.h"
 #include "Settings.h"
 #include "SettingsTab.h"
+#include <QTimer>
 
 class CSensorTrayIcons : public QMainWindow
 {
@@ -16,6 +14,7 @@ class CSensorTrayIcons : public QMainWindow
 private:
 	Ui::CSensorTrayIconsClass ui;
 
+	CSettings* m_pSettings;
 	CSettingsTab* m_pSettingsTab;
 	CSystemInfo m_system;
 	QTimer m_updateTimer;
@@ -25,13 +24,12 @@ private:
 
 public:
 	CSensorTrayIcons(QWidget *parent = nullptr);
-	~CSensorTrayIcons();
 
 private:
 	QMenu* CreateMenu();
 
 private slots:
-	void OpenSettings();
+	void OpenSettings() const;
 	void ApplySettings();
 	void OpenAbout();
 	void UpdateIcons();
